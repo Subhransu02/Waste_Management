@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f4f8;
+        }
+
+        h1 {
+            color: #26d12c;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/head.ejs") %>
+        <%- include("../common/navbar.ejs") %>
+            <h1>Thank You, <%= name %>!</h1>
+            <p>Your message has been sent successfully. We will get back to you soon.</p>
+            <a href="/contact">Go back to the contact page</a>
+            <%- include("../common/footer.ejs") %>
+</body>
+
+</html>
