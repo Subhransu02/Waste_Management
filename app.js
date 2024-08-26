@@ -4,10 +4,10 @@ const path = require("path");
 const ejs = require("ejs");
 const cookieParser = require("cookie-parser");
 
-// const _db = require("./config/db");
+const _db = require("./config/db");
 const indexRoutes = require("./routes/index");
 
-// _db.connectToServer();
+_db.connectToServer();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
