@@ -96,3 +96,54 @@ exports.submitcontact =  (req, res) => {
       res.send("There is some error here");
     });
 };
+
+
+exports.getUserDashboard = async (req, res) => {
+  let token = req.cookies["accesstoken"];
+  let email = jwt.decode(token, process.env.jwt_secret).email;
+  let db = _db.getDb();
+
+  let result = await db
+    .collection("requests")
+    .find(
+      {
+        email,
+      },
+      {
+        projection: {
+          _id: false,
+          request_type: true,
+          status: true,
+          assignedDriver: true,
+        },
+      }
+    )
+    .toArray();
+
+  let total_requests = result.length;
+  let total_pending = result.filter((item) => item.status === "pending").length;
+  let total_resolved = result.filter((item) => item.status === "resolved").length;
+  let total_pickup_request = result.filter((item) => item.request_type === "Pickup").length;
+  let total_complaint_request = result.filter((item) => item.request_type === "Complaint").length;
+  let total_recycling_request = result.filter((item) => item.request_type === "Recycling").length;
+  let total_other_request = result.filter((item) => item.request_type === "Other").length;
+  let total_unassigned_driver_requests = result.filter((item) => item.assignedDriver === "none").length;
+
+  res.render("user/userDashboard.ejs", {
+    result: {
+      total_requests,
+      total_pending,
+      total_resolved,
+      total_pickup_request,
+      total_complaint_request,
+      total_recycling_request,
+      total_other_request,
+      total_unassigned_driver_requests,
+    },
+  });
+};
+
+exports.logoutUser = (req, res) => {
+  res.clearCookie("accesstoken");
+  res.redirect("/");
+};

@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,6 +16,7 @@
 
         h1 {
             color: #8d26db;
+            font-size: larger;
         }
 
         main {
@@ -53,37 +51,47 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+
         }
 
         input,
         textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #0e0404;
             border-radius: 4px;
             box-sizing: border-box;
+
+
         }
 
         button {
-            background-color: #26d12c;
-            padding: 12px 24px;
-            border-radius: 4px;
+            background-color: white;
+            color: #8d26db;
+            padding: 50px;
+            border: 2px solid;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 18px;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        /* button:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #e1c2fb;
             transform: translateY(-2px);
         }
 
-        button:focus {
+        input:focus {
+            border-color: #8d26db;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(38, 209, 44, 0.3);
-        } */
+            border-width: 2px;
+        }
 
+        textarea:focus {
+            border-color: #8d26db;
+            outline: none;
+            border-width: 2px;
+        }
 
         footer {
             background-color: #f4f4f4;
@@ -101,7 +109,7 @@
         <%- include("../common/navbar.ejs") %>
 
             <header>
-                <h1>Contact Us</h1>
+                <h1>CONTACT US</h1>
             </header>
 
             <main>
@@ -121,7 +129,7 @@
                         <textarea id="message" name="message" rows="4" required></textarea>
                     </div>
 
-                    <button type="submit">Contact</button>
+                    <button type="submit">CONTACT</button>
                 </form>
             </main>
 
