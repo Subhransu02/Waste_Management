@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 app.use("/", indexRoutes);
 
-// app.get("*", (req, res) => {
-//     res.render("404.ejs");
-// })
+app.get("*", (req, res) => {
+    res.render("404.ejs");
+})
 
 
 app.listen("3000", () => {

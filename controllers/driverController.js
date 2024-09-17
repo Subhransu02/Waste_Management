@@ -85,11 +85,63 @@ exports.getDriverDashboard = async (req, res) => {
   }
 };
 
+exports.getPendingRequests = async (req, res) => {
+  let db = _db.getDb();
+  let result = await db
+    .collection("requests")
+    .find({ assignedDriverId: req.driverId, status: "pending" })
+    .project({
+      status: 0,
+      assignedDriver: 0,
+      assignedDriverId: 0,
+    })
+    .toArray();
 
+  res.render("driver/pendingRequests.ejs", { requests: result });
+};
 
+exports.resolveRequest = async (req, res) => {
+  let requestId = req.query.requestId;
+  let db = _db.getDb();
 
+  let result = await db.collection("requests").findOneAndUpdate(
+    {
+      _id: new ObjectId(requestId),
+      assignedDriverId: req.driverId,
+    },
+    { $set: { status: "resolved" } }
+  );
 
+  res.json(result);
+};
 
+exports.rejectRequest = async (req, res) => {
+  let requestId = req.query.requestId;
+  let db = _db.getDb();
+
+  let result = await db.collection("requests").findOneAndUpdate(
+    {
+      _id: new ObjectId(requestId),
+      assignedDriverId: req.driverId,
+    },
+    { $set: { status: "rejected" } }
+  );
+
+  res.json(result);
+};
+
+exports.getRequestHistory = async (req, res) => {
+  try {
+    let db = _db.getDb();
+    let result = await db
+      .collection("requests")
+      .find({ assignedDriverId: req.driverId }, { projection: { _id: false } })
+      .toArray();
+    res.render("driver/history.ejs", { requests: result.reverse() });
+  } catch (err) {
+    res.send(err);
+  }
+};
 
 exports.logoutDriver = (req, res) => {
   res.clearCookie("accesstoken");

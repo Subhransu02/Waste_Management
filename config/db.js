@@ -16,7 +16,6 @@ module.exports = {
             // Create a user table if there is no user table
             if((await _db.collections()).length == 0){
                 _db.createCollection("users");
-                // _db.createCollection("contact");
             }
            
 

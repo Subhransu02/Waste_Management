@@ -1,7 +1,7 @@
 const jwt = require("../utils/jwt");
 const bcrypt = require("../utils/bcrypt");
 const _db = require("../config/db");
-require("dotenv").config;
+require("dotenv").config
 
 exports.getHomepage = (req, res) => {
   let token = req.cookies["accesstoken"];
@@ -15,13 +15,19 @@ exports.getHomepage = (req, res) => {
   });
 };
 
+
+
 exports.getSignupPage = (req, res) => {
   res.render("user/signup.ejs");
 };
 
+
+
 exports.getLoginPage = (req, res) => {
   res.render("user/login.ejs");
 };
+
+
 
 exports.signupUser = async (req, res) => {
   let entered_data = req.body;
@@ -46,6 +52,8 @@ exports.signupUser = async (req, res) => {
   }
 };
 
+
+
 exports.loginUser = async (req, res) => {
   let body = req.body;
   let { email, password } = body;
@@ -62,9 +70,7 @@ exports.loginUser = async (req, res) => {
     if (!is_password_right) {
       res.send("Email or password is wrong");
     } else {
-      let access_token = jwt.sign({ email }, process.env.jwt_secret, {
-        expiresIn: "5h",
-      });
+      let access_token = jwt.sign({ email }, process.env.jwt_secret, { expiresIn: "5h" });
       res.cookie("accesstoken", access_token);
       console.log("User logged in");
       res.redirect("/home");
@@ -72,30 +78,6 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.getcontactUsPage = async (req, res) => {
-  res.render("user/contactUs.ejs");
-};
-
-exports.submitcontact =  (req, res) => {
-  let token = req.cookies["accesstoken"];
-  let email = jwt.decode(token, process.env.jwt_secret).email;
-  let message = req.body.message;
-  let name = req.body.name;
-  let data_to_insert_in_db = req.body;
-  data_to_insert_in_db.name = name;
-  data_to_insert_in_db.email = email;
-  data_to_insert_in_db.message = message;
-
-  let db = _db.getDb();
-  db.collection("contact")
-    .insertOne(data_to_insert_in_db)
-    .then(() => {
-      res.render("thank-you", { data_to_insert_in_db });
-    })
-    .catch((err) => {
-      res.send("There is some error here");
-    });
-};
 
 
 exports.getUserDashboard = async (req, res) => {
@@ -143,7 +125,51 @@ exports.getUserDashboard = async (req, res) => {
   });
 };
 
+
+
 exports.logoutUser = (req, res) => {
   res.clearCookie("accesstoken");
   res.redirect("/");
+};
+
+
+
+exports.getRaiseRequestPage = (req, res) => {
+  res.render("user/request.ejs");
+};
+
+
+
+exports.submitRequest = (req, res) => {
+  let token = req.cookies["accesstoken"];
+  let email = jwt.decode(token, process.env.jwt_secret).email;
+  let data_to_insert_in_db = req.body;
+  data_to_insert_in_db.email = email;
+  data_to_insert_in_db.status = "pending";
+  data_to_insert_in_db.time = new Date().toLocaleString();
+  data_to_insert_in_db.assignedDriver = "none";
+
+  let db = _db.getDb();
+  db.collection("requests")
+    .insertOne(data_to_insert_in_db)
+    .then(() => {
+      res.send("Your request has been submitted to our database.");
+    })
+    .catch((err) => {
+      res.send("There is some error here");
+    });
+};
+
+
+
+exports.getMyRequests = async (req, res) => {
+  let email = jwt.decode(req.cookies["accesstoken"], process.env.jwt_secret).email;
+  let db = _db.getDb();
+
+  try {
+    let result = await db.collection("requests").find({ email }).toArray();
+    res.render("user/my-requests.ejs", { requests: result.reverse() });
+  } catch (err) {
+    res.send("There is some error.");
+  }
 };

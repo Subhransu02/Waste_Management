@@ -1,14 +1,13 @@
 {
-  "name": "waste_management",
+  "name": "waste-management-system",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a project to build a smart way to manage wastes",
   "main": "app.js",
   "scripts": {
     "start": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Subhransu Sekhar Panda",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -18,7 +17,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.8.0",
+    "mongodb": "^6.5.0",
     "nodemon": "^3.1.4"
   }
 }
