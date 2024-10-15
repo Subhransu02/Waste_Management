@@ -110,7 +110,6 @@ exports.getAllRequests = async (req, res) => {
     let db = _db.getDb();
 
     let allDrivers = await db.collection("drivers").find({}).project({ name: 1 }).toArray();
-
     db.collection("requests")
         .find({})
         .toArray()
